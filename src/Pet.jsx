@@ -6,6 +6,7 @@ function Pet({ id, name, images, desc }) {
   }
   return (
     <>
+    
       <a href={`details/${id}`}>
         <div className="lists">
           <h1>{name}</h1>
