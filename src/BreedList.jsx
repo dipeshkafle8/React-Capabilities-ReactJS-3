@@ -1,29 +1,7 @@
-import { useState, useEffect } from "react";
-
-let localCache = {}; //to store the breeds of previously visited animal
+import fetchBreedList from "./fetchBreedList";
+import { useQuery } from "@tanstack/react-query";
 export default function useBreedList(animal) {
-  const [status, setStatus] = useState("unloaded");
-  const [breedList, setBreedlist] = useState([]);
-  useEffect(() => {
-    if (!animal) {
-      setBreedlist([]);
-    } else if (localCache[animal]) {
-      setBreedlist(localCache[animal]);
-    } else {
-      requestBreedList();
-    }
-
-    async function requestBreedList() {
-      setBreedlist([]);
-      setStatus("loading");
-      let res = await fetch(
-        `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
-      );
-      const json = await res.json();
-      localCache[animal] = json.breeds || [];
-      setBreedlist(localCache[animal]);
-      setStatus("loaded");
-    }
-  }, [animal]);
-  return [breedList, status];
+  const results=useQuery(["breeds",animal],fetchBreedList);
+return [results?.data?.breeds??[],results.status]
+//if results exits got to data and if data exists go to breed otherwise return empty[]array,status
 }
