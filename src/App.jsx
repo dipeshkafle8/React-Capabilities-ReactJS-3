@@ -1,3 +1,5 @@
+import { useState } from "react";
+import AdoptedPetContext from "./AdoptedPetContext";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SearchParams from "./display/SearchParams";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -13,14 +15,22 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const adoptedPet = useState(null);
+  {
+    /** whole hook is inside of adoptedPet so this value can changed by another element which has access of this */
+  }
   return (
     <>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <Routes>
-            <Route path="/" element={<SearchParams />} />
-            <Route path="/details/:id" element={<Details />} />
-          </Routes>
+          <AdoptedPetContext.Provider value={adoptedPet}>
+            {" "}
+            {/*adoptedPet will be available to all the elements wrapped inside of it*/}
+            <Routes>
+              <Route path="/" element={<SearchParams />} />
+              <Route path="/details/:id" element={<Details />} />
+            </Routes>
+          </AdoptedPetContext.Provider>
         </QueryClientProvider>
       </BrowserRouter>
     </>
