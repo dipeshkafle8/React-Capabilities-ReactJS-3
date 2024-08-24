@@ -1,7 +1,6 @@
 import Pet from "./Pet";
 import PropTypes from "prop-types";
-function Results({ pets }) {
-  console.log(pets);
+function Results({ pets }) {  
   return (
     <>
       <div id="container">
